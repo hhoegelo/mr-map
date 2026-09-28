@@ -28,12 +28,15 @@ should I focus on?" is exactly the question they cannot answer.
 ## Workflow
 
 1. **What is the change?**
-   `python3 tools/subject.py <MR | BASE..HEAD | --dirty BASE> --repo <checkout>`
+   `python3 tools/subject.py <MR | BASE..HEAD | --dirty BASE> --repo <checkout> --out <map dir>/subject.json`
    Read the area table. Check the base: an integration branch base or a stale
    local ref inflates the diff by orders of magnitude. Fetch the MR branch into
    the checkout (`git fetch origin <branch>`) — never check it out, the checkout
    may be shared. Read the MR description: it says what was observed, which the
-   code cannot.
+   code cannot. But treat its claims as claims: bot summaries (Cursor, …) are
+   written for an older commit and stay in the text — class names, file formats,
+   whole features in them may be gone. Every mismatch with the code goes into the
+   diagram and, in reviewer mode, onto the question list.
 
 2. **Pick the story, then the map.** One sentence: what does this MR make happen
    that did not happen before? The root diagram draws that path — data flow,
@@ -47,7 +50,10 @@ should I focus on?" is exactly the question they cannot answer.
    asked for: *4–9 boxes in flow order, each `CodeName | one-line fact with a
    number | file:line`, plus the one sub-part complex enough for a further
    level, and everything that could not be verified.* Never draw a fact no
-   agent or you read in the code.
+   agent or you read in the code. Tell each agent to read the MR branch with
+   `git show '<rev>:<path>'` without checking out; in zsh, `$REV:path` is a
+   modifier (`:l` lowercases), so it must be quoted or written `${REV}:path`.
+   Before a finding goes onto the question list, read the cited lines yourself.
 
 4. **Write `maps/<name>/map.js`.** Start from `examples/starter/map.js`. Every
    root node gets a detail; a detail node gets one when it hides real logic.

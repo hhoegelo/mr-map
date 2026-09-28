@@ -117,6 +117,10 @@ several times too large.
 - **A hidden browser pane stops `requestAnimationFrame`.** Nothing moves, nothing is broken.
 - **`const top` at script level collides with `window.top`** and kills the page
   with a SyntaxError. Name helpers `topOf`.
+- **The root's width is free — give columns room.** Five columns of 356 units
+  in a 2000-wide root left every miniature under 100 units wide; 470 per column
+  in a 2700-wide root fixed all 18 warnings. Size the root from the columns, not
+  the other way round.
 - **Speeds are the audience's, not the author's.** 150 units/s on the map and
   350 in details were chosen after "too fast" at double the speed.
 
