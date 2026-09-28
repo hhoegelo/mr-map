@@ -1,0 +1,92 @@
+:root {
+  --ground: #f6f5f1;
+  --sheet: #ffffff;
+  --edge: #d6d4cb;
+  --edge-strong: #b6b4ab;
+  --ink: #201f1d;
+  --pencil: #5f5d57;
+  --faint: #94928b;
+  --share: #eceffb;
+  --share-edge: #a7b1e6;
+  --signal: #4456c7;
+  --signal-glow: rgba(68, 86, 199, 0.28);
+  --realtime: #c2361f;
+  --band: rgba(32, 31, 29, 0.035);
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --sans: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground: #17181c; --sheet: #202127; --edge: #3a3b43; --edge-strong: #565862;
+    --ink: #ecebe6; --pencil: #aeada6; --faint: #7d7c76;
+    --share: #1f2236; --share-edge: #4d5693;
+    --signal: #8f9cff; --signal-glow: rgba(143, 156, 255, 0.3);
+    --realtime: #ff7a5c; --band: rgba(255, 255, 255, 0.03);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground: #17181c; --sheet: #202127; --edge: #3a3b43; --edge-strong: #565862;
+  --ink: #ecebe6; --pencil: #aeada6; --faint: #7d7c76;
+  --share: #1f2236; --share-edge: #4d5693;
+  --signal: #8f9cff; --signal-glow: rgba(143, 156, 255, 0.3);
+  --realtime: #ff7a5c; --band: rgba(255, 255, 255, 0.03);
+}
+
+html, body { height: 100%; }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--sans); overflow: hidden; user-select: none; }
+#stage { position: relative; height: 100%; width: 100%; overflow: hidden; }
+#stage svg { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; }
+#stage svg.dragging { cursor: grabbing; }
+
+.hud { position: absolute; display: flex; gap: 8px; align-items: center; font-family: var(--mono); font-size: 12px; color: var(--pencil); }
+.hud.top { top: calc(env(safe-area-inset-top, 0px) + 14px); right: 16px; }
+.hud.bottom { bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); left: 16px; right: 16px; justify-content: space-between; flex-wrap: wrap; }
+.hud button { font: inherit; color: var(--ink); background: var(--sheet); border: 1px solid var(--edge-strong); border-radius: 3px; padding: 5px 10px; cursor: pointer; }
+.hud button:hover { border-color: var(--signal); color: var(--signal); }
+.hud button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+/* root decorations */
+.band { fill: var(--band); }
+.band-label { font-family: var(--mono); letter-spacing: .08em; text-transform: uppercase; fill: var(--faint); }
+.band-label.rt { fill: var(--realtime); }
+.zone { fill: var(--share); stroke: var(--share-edge); stroke-width: 1.6; stroke-dasharray: 7 4; }
+.zone-label { font-weight: 600; fill: var(--signal); }
+.head { font-weight: 600; fill: var(--ink); }
+.head-sub { fill: var(--pencil); }
+
+/* every diagram */
+.window { fill: var(--sheet); stroke: var(--signal); stroke-width: 3; }
+.heading { font-family: var(--mono); font-weight: 600; fill: var(--ink); }
+.group { font-family: var(--mono); letter-spacing: .06em; text-transform: uppercase; fill: var(--faint); }
+.node .frame { fill: var(--sheet); stroke: var(--edge-strong); stroke-width: 1.4; transition: stroke .35s, stroke-width .35s; }
+.node.shared > .frame { stroke: var(--share-edge); }
+.node.idle > .frame { fill: var(--ground); stroke-dasharray: 5 4; }
+.node.lit > .frame { stroke: var(--signal); stroke-width: 2.6; }
+.node .tag { fill: var(--realtime); }
+.node .title { font-family: var(--mono); font-weight: 600; fill: var(--ink); }
+.node .sub { fill: var(--pencil); }
+.node.idle > .title, .node.idle > .sub { fill: var(--faint); }
+.node { cursor: zoom-in; }
+.rail { stroke: var(--edge-strong); stroke-width: 1.6; fill: none; }
+.rail.bypass { stroke-dasharray: 5 4; }
+.rail.ack { stroke: var(--share-edge); stroke-dasharray: 5 4; }
+.rail.plain { stroke: var(--pencil); stroke-width: 1.2; }
+.marker { fill: var(--edge-strong); }
+.marker.ack { fill: var(--share-edge); }
+.note { fill: var(--pencil); }
+.note.faint { fill: var(--faint); }
+.note.mono { font-family: var(--mono); }
+.mark { stroke: var(--faint); stroke-width: 1.5; }
+
+.pulse { fill: none; stroke: var(--signal); stroke-width: 4; stroke-linecap: round; filter: drop-shadow(0 0 5px var(--signal-glow)); }
+.detail .pulse { stroke-width: 8; }
+.pulse.ack { stroke: var(--share-edge); stroke-width: 3; }
+.detail .pulse.ack { stroke-width: 6; }
+.hold rect { fill: var(--signal); }
+.hold text { font-family: var(--mono); fill: var(--sheet); }
+.hold { opacity: 0; transition: opacity .4s; }
+.hold.on { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) { .pulse, .hold { display: none; } }
