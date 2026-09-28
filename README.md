@@ -119,3 +119,7 @@ several times too large.
   with a SyntaxError. Name helpers `topOf`.
 - **Speeds are the audience's, not the author's.** 150 units/s on the map and
   350 in details were chosen after "too fast" at double the speed.
+
+## License
+
+MIT — see `LICENSE`.
